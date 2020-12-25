@@ -5,9 +5,7 @@ import java.util.Optional;
 
 import com.bnk03.bnklaim.entities.UserAccounts;
 import com.bnk03.bnklaim.repositories.UserAccountsRepository;
-import com.jayway.jsonpath.Option;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +18,25 @@ public class UserAccountsService {
         this.userAccountsRepository = userAccountsRepository;
     }
 
-    // public UserAccounts register() {
+    public boolean isValidUserAccountData(UserAccounts userInput) {
+        UserAccounts userAccount = userAccountsRepository.findByEmail(userInput.getEmail());
+        if (userAccount == null) {
+            return false;
+        }
+        try {
+            return userInput.getFirstName().equals(userAccount.getFirstName())
+                    && userInput.getLastName().equals(userAccount.getLastName())
+                    && userInput.getEmail().equals(userAccount.getEmail())
+                    && userInput.getInsuranceAccountNumber().equals(userAccount.getInsuranceAccountNumber());
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
-    // }
+    public boolean isRegisteredAccount(UserAccounts userInput) {
+        UserAccounts userAccount = userAccountsRepository.findByEmail(userInput.getEmail());
+        return userAccount.getIsRegistered();
+    }
 
     public Object retriveUserAccount(String userId) {
         Optional<UserAccounts> opt = userAccountsRepository.findById(userId);

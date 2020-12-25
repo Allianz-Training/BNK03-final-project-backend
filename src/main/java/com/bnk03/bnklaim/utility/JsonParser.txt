@@ -1,0 +1,19 @@
+// package com.bnk03.bnklaim.utility;
+
+// import com.fasterxml.jackson.core.JsonProcessingException;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+
+// public class JsonParser {
+// private static ObjectMapper mapper = new ObjectMapper();
+
+// private JsonParser() {
+// }
+
+// public static String jsonParser(Object object) {
+// try {
+// return mapper.writeValueAsString(object);
+// } catch (JsonProcessingException e) {
+// return e.toString();
+// }
+// }
+// }

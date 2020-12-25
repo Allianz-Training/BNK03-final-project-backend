@@ -15,6 +15,7 @@ public class UserAccounts {
     private String phone;
     private String insuranceAccountNumber;
     private String passwordHash;
+    private boolean isRegistered;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -22,12 +23,11 @@ public class UserAccounts {
         // constructor
     }
 
-    public UserAccounts(String firstName, String lastName, String email, String phone, String insuranceAccountNumber,
+    public UserAccounts(String firstName, String lastName, String email, String insuranceAccountNumber,
             String passwordHash) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.phone = phone;
         this.insuranceAccountNumber = insuranceAccountNumber;
         this.passwordHash = passwordHash;
     }
@@ -71,6 +71,10 @@ public class UserAccounts {
         return passwordHash;
     }
 
+    public boolean getIsRegistered() {
+        return isRegistered;
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -97,6 +101,10 @@ public class UserAccounts {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public void setRegistered(boolean isRegistered) {
+        this.isRegistered = isRegistered;
     }
 
     @Override
