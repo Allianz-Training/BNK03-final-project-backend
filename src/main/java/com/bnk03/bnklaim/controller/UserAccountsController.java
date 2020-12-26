@@ -1,5 +1,6 @@
 package com.bnk03.bnklaim.controller;
 
+import com.bnk03.bnklaim.EmailService;
 import com.bnk03.bnklaim.entities.UserAccounts;
 import com.bnk03.bnklaim.service.UserAccountsService;
 
@@ -40,5 +41,16 @@ public class UserAccountsController {
             return new ResponseEntity<>("{\"status\":\"401\",\"message\":\"Invalid information\"}", responseHeaders,
                     HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @PutMapping("/register/otp")
+    public ResponseEntity<String> otp(@RequestBody UserAccounts userInput) {
+        try {
+            EmailService.sendMail(userInput, "ASFK");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return new ResponseEntity<>("{\"status\":\"201\",\"message\":\"Success\"}", responseHeaders,
+                HttpStatus.CREATED);
     }
 }

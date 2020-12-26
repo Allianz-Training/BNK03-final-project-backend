@@ -1,16 +1,24 @@
 package com.bnk03.bnklaim.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 import com.bnk03.bnklaim.entities.UserAccounts;
 import com.bnk03.bnklaim.repositories.UserAccountsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class UserAccountsService {
+    private static final long OTP_VALID_DURATION = 5 * 60 * 1000; // 5 minutes
+
     private UserAccountsRepository userAccountsRepository;
 
     @Autowired
@@ -49,5 +57,4 @@ public class UserAccountsService {
     public List<UserAccounts> retriveUserAccounts() {
         return userAccountsRepository.findAll();
     }
-
 }

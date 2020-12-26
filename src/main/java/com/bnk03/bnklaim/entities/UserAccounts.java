@@ -16,6 +16,8 @@ public class UserAccounts {
     private String insuranceAccountNumber;
     private String passwordHash;
     private boolean isRegistered;
+    private String oneTimePassword;
+    private String otpRequestedTime;
 
     private ObjectMapper mapper = new ObjectMapper();
 
