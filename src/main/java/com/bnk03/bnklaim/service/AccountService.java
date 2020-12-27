@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 public class AccountService {
     @Autowired
     private AccountsRepository accountsRepository;
-
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-
     private static final long OTP_LIMIT_TIME = 5 * 60 * 1000;
 
     public AccountService() {
@@ -29,7 +27,7 @@ public class AccountService {
         return bCryptPasswordEncoder.encode(string);
     }
 
-    public boolean matcher(String string, String encodedString) {
+    public boolean isMatch(String string, String encodedString) {
         return bCryptPasswordEncoder.matches(string, encodedString);
     }
 
@@ -68,8 +66,11 @@ public class AccountService {
     }
 
     public Accounts getAccountFromDatabase(String insuranceAccountNumber) {
-        System.out.println(insuranceAccountNumber);
         return accountsRepository.findByInsuranceAccountNumber(insuranceAccountNumber);
+    }
+
+    public Accounts getAccountFromDatabaseByEmail(String email) {
+        return accountsRepository.findByEmail(email);
     }
 
     public void setRequestedOtpData(Accounts account, String otp, String temporaryPassword) {

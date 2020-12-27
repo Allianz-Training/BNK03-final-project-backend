@@ -11,7 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +36,31 @@ public class AccountController {
         httpHeaders.set("Content-Type", "application/json");
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<String> login() {
-        return new ResponseEntity<>("login", httpHeaders, HttpStatus.CREATED);
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Accounts account) {
+        Accounts dbAccount = accountService.getAccountFromDatabaseByEmail(account.getEmail());
+        if (dbAccount != null) {
+            if (accountService.isEnabledAccount(dbAccount)) {
+                if (accountService.isMatch(account.getTemporaryPassword(), dbAccount.getPasswordHash())) {
+                    return new ResponseEntity<>(
+                            STATUSSTRING + HttpStatus.OK.value() + ",\"message\":\"Login Success\"}", httpHeaders,
+                            HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(
+                            STATUSSTRING + HttpStatus.UNAUTHORIZED.value()
+                                    + ",\"message\":\"Username or password Not match\"}",
+                            httpHeaders, HttpStatus.UNAUTHORIZED);
+                }
+            } else {
+                return new ResponseEntity<>(
+                        STATUSSTRING + HttpStatus.CONFLICT.value()
+                                + ",\"message\":\"This account didn't register yet\"}",
+                        httpHeaders, HttpStatus.CONFLICT);
+            }
+        }
+        return new ResponseEntity<>(
+                STATUSSTRING + HttpStatus.UNAUTHORIZED.value() + ",\"message\":\"Username or password Not match\"}",
+                httpHeaders, HttpStatus.UNAUTHORIZED);
     }
 
     @PutMapping("/register")

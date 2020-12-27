@@ -23,15 +23,6 @@ public class Accounts {
         // constructor
     }
 
-    public Accounts(String firstName, String lastName, String email, String insuranceAccountNumber,
-            String temporaryPassword) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.insuranceAccountNumber = insuranceAccountNumber;
-        this.temporaryPassword = temporaryPassword;
-    }
-
     public String getUserId() {
         return userId;
     }
