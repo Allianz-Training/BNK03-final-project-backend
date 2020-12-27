@@ -30,7 +30,7 @@ public class AccountController {
 
     private HttpHeaders httpHeaders = new HttpHeaders();
 
-    private final String STATUSSTRING = "{\"status\":";
+    private static final String STATUSSTRING = "{\"status\":";
 
     private AccountController() {
         httpHeaders.set("Content-Type", "application/json");
