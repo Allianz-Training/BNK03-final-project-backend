@@ -2,8 +2,6 @@ package com.bnk03.bnklaim.controller;
 
 import javax.mail.MessagingException;
 
-// import java.util.Map;
-
 import com.bnk03.bnklaim.entity.Accounts;
 import com.bnk03.bnklaim.service.AccountService;
 import com.bnk03.bnklaim.service.MailService;

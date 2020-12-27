@@ -2,9 +2,7 @@ package com.bnk03.bnklaim.service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.DateFormat;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.Map.Entry;
 
 import com.bnk03.bnklaim.entity.Accounts;
@@ -74,7 +72,7 @@ public class AccountService {
     public void setOtpData(Accounts accounts, String otp, String temporaryPassword) {
         accounts.setOneTimePassword(otp);
         accounts.setOtpRequestedTime(System.currentTimeMillis());
-        accounts.setTemporaryPassword(temporaryPassword);
+        accounts.setTemporaryPassword(bcrypString(temporaryPassword));
         accountsRepository.save(accounts);
     }
 }

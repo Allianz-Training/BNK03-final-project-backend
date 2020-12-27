@@ -2,7 +2,6 @@ package com.bnk03.bnklaim.config;
 
 import com.bnk03.bnklaim.service.MailService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
