@@ -92,8 +92,8 @@ public class Accounts {
         return isEnabled;
     }
 
-    public void setEnabled(String isEnabled) {
-        this.isEnabled = isEnabled.equals("true");
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
     public String getOneTimePassword() {

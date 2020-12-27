@@ -19,6 +19,8 @@ public class AccountService {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
+    private static final long OTP_LIMIT_TIME = 5 * 60 * 1000;
+
     public AccountService() {
         // constructor
     }
@@ -66,13 +68,40 @@ public class AccountService {
     }
 
     public Accounts getAccountFromDatabase(String insuranceAccountNumber) {
+        System.out.println(insuranceAccountNumber);
         return accountsRepository.findByInsuranceAccountNumber(insuranceAccountNumber);
     }
 
-    public void setOtpData(Accounts accounts, String otp, String temporaryPassword) {
-        accounts.setOneTimePassword(otp);
-        accounts.setOtpRequestedTime(System.currentTimeMillis());
-        accounts.setTemporaryPassword(bcrypString(temporaryPassword));
-        accountsRepository.save(accounts);
+    public void setRequestedOtpData(Accounts account, String otp, String temporaryPassword) {
+        account.setOneTimePassword(otp);
+        account.setOtpRequestedTime(System.currentTimeMillis());
+        account.setTemporaryPassword(bcrypString(temporaryPassword));
+        accountsRepository.save(account);
+    }
+
+    public void setRegisterSuccess(Accounts account) {
+        account.setPasswordHash(account.getTemporaryPassword());
+        account.setEnabled(true);
+        accountsRepository.save(account);
+    }
+
+    public void clearOtpAndTemp(Accounts account) {
+        account.setOneTimePassword(null);
+        account.setOtpRequestedTime(null);
+        account.setTemporaryPassword(null);
+        accountsRepository.save(account);
+    }
+
+    public boolean isInOtpRequestedTime(Accounts account) {
+        try {
+            return System.currentTimeMillis() - account.getOtpRequestedTime() <= OTP_LIMIT_TIME;
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isOtpValid(Accounts account, String otpInputString) {
+        return otpInputString.equals(account.getOneTimePassword());
     }
 }

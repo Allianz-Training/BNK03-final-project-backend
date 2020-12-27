@@ -30,6 +30,8 @@ public class AccountController {
 
     private HttpHeaders httpHeaders = new HttpHeaders();
 
+    private final String STATUSSTRING = "{\"status\":";
+
     private AccountController() {
         httpHeaders.set("Content-Type", "application/json");
     }
@@ -45,22 +47,44 @@ public class AccountController {
             if (!accountService.isEnabledAccount(account)) {
                 Accounts dbAccount = accountService.getAccountFromDatabase(account.getInsuranceAccountNumber());
                 String otp = mailService.generateOTP(4);
-                accountService.setOtpData(dbAccount, otp, account.getTemporaryPassword());
+                accountService.setRequestedOtpData(dbAccount, otp, account.getTemporaryPassword());
                 mailService.sendMail(dbAccount, otp);
 
-                return new ResponseEntity<>("{\"status\":\"201\",\"message\":\"Success\"}", httpHeaders,
-                        HttpStatus.CREATED);
+                return new ResponseEntity<>(STATUSSTRING + HttpStatus.OK.value() + ",\"message\":\"Success\"}",
+                        httpHeaders, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("{\"status\":\"409\",\"message\":\"This account already registered\"}",
+                return new ResponseEntity<>(
+                        STATUSSTRING + HttpStatus.CONFLICT.value()
+                                + ",\"message\":\"This account already registered\"}",
                         httpHeaders, HttpStatus.CONFLICT);
             }
         }
-        return new ResponseEntity<>("{\"status\":\"401\",\"message\":\"Invalid information\"}", httpHeaders,
+        return new ResponseEntity<>(
+                STATUSSTRING + HttpStatus.UNAUTHORIZED.value() + ",\"message\":\"Invalid information\"}", httpHeaders,
                 HttpStatus.UNAUTHORIZED);
     }
 
     @PutMapping("/register/otp")
-    public ResponseEntity<String> otp() {
-        return new ResponseEntity<>("otp", httpHeaders, HttpStatus.CREATED);
+    public ResponseEntity<String> otp(@RequestBody Accounts accountInput) {
+        Accounts account = accountService.getAccountFromDatabase(accountInput.getInsuranceAccountNumber());
+        System.out.println(account);
+        if (accountService.isInOtpRequestedTime(account)) {
+            if (accountService.isOtpValid(account, accountInput.getOneTimePassword())) {
+                accountService.setRegisterSuccess(account);
+                accountService.clearOtpAndTemp(account);
+
+                return new ResponseEntity<>(
+                        STATUSSTRING + HttpStatus.CREATED.value() + ",\"message\":\"Register success\"}", httpHeaders,
+                        HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(
+                        STATUSSTRING + HttpStatus.UNAUTHORIZED.value() + ",\"message\":\"Invalid OTP\"}", httpHeaders,
+                        HttpStatus.UNAUTHORIZED);
+            }
+        }
+        accountService.clearOtpAndTemp(account);
+
+        return new ResponseEntity<>(STATUSSTRING + HttpStatus.REQUEST_TIMEOUT.value() + ",\"message\":\"OTP timeout\"}",
+                httpHeaders, HttpStatus.REQUEST_TIMEOUT);
     }
 }
