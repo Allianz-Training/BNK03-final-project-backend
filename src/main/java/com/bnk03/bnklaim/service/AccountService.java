@@ -93,6 +93,11 @@ public class AccountService {
         accountsRepository.save(account);
     }
 
+    public void disableAccount(Accounts account) {
+        account.setEnabled(false);
+        accountsRepository.save(account);
+    }
+
     public boolean isInOtpRequestedTime(Accounts account) {
         try {
             return System.currentTimeMillis() - account.getOtpRequestedTime() <= OTP_LIMIT_TIME;

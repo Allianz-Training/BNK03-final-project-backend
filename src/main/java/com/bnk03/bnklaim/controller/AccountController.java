@@ -70,7 +70,7 @@ public class AccountController {
                 Accounts dbAccount = accountService.getAccountFromDatabase(account.getInsuranceAccountNumber());
                 String otp = mailService.generateOTP(4);
                 accountService.setRequestedOtpData(dbAccount, otp, account.getTemporaryPassword());
-                mailService.sendMail(dbAccount, otp);
+                mailService.sendMail(account, otp);
 
                 return new ResponseEntity<>(STATUSSTRING + HttpStatus.OK.value() + ",\"message\":\"Success\"}",
                         httpHeaders, HttpStatus.OK);
@@ -108,5 +108,14 @@ public class AccountController {
 
         return new ResponseEntity<>(STATUSSTRING + HttpStatus.REQUEST_TIMEOUT.value() + ",\"message\":\"OTP timeout\"}",
                 httpHeaders, HttpStatus.REQUEST_TIMEOUT);
+    }
+
+    @PutMapping("register/otp/disable")
+    public ResponseEntity<String> disableAccount(@RequestBody Accounts accountInput) {
+        Accounts account = accountService.getAccountFromDatabase(accountInput.getInsuranceAccountNumber());
+        accountService.clearOtpAndTemp(account);
+        accountService.disableAccount(account);
+        return new ResponseEntity<>(STATUSSTRING + HttpStatus.OK.value() + ",\"message\":\"Success\"}", httpHeaders,
+                HttpStatus.OK);
     }
 }
