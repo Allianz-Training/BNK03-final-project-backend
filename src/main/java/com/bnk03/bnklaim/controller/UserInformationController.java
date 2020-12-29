@@ -42,10 +42,3 @@ public class UserInformationController {
                 HttpStatus.OK);
     }
 }
-
-// {\"firstName\":" + uInfo.getFirstName()
-// + ",\"lastName\":" + uInfo.getLastName() + ",\"insuranceAccountNumber\":"
-// + uInfo.getInsuranceAccountNumber() + ",\"brand\":" + uInfo.getBrand() +
-// ",\"carRegistration\":"
-// + uInfo.getCarRegistration() + ",\"claimState\":" + uInfo.getClaimState() +
-// "}
