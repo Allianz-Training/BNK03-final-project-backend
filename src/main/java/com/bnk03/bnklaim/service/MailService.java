@@ -18,6 +18,7 @@ import javax.mail.internet.MimeMultipart;
 import com.bnk03.bnklaim.entity.Accounts;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 public class MailService {
     @Value("${bnklaim.mailservice.email}")
