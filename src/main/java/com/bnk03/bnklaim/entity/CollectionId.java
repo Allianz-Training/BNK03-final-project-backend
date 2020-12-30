@@ -9,6 +9,14 @@ public class CollectionId {
     private String idName;
     private int currentCollectionId;
 
+    public CollectionId() {
+    }
+
+    public CollectionId(String idName, int currentCollectionId) {
+        this.idName = idName;
+        this.currentCollectionId = currentCollectionId;
+    }
+
     public String getIdName() {
         return idName;
     }
