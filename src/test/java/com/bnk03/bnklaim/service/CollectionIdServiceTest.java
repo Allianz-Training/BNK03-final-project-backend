@@ -1,6 +1,9 @@
 package com.bnk03.bnklaim.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,6 +39,19 @@ class CollectionIdServiceTest {
     }
 
     @Test
+
+    void testGetCollectionNotFound() {
+        when(collectionIdRepository.findById("case")).thenReturn(Optional.empty());
+        Exception exception = assertThrows(DataNotFoundException.class,
+                () -> collectionIdService.getCollection("case"));
+
+        String expectedMessage = "Collection name not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
     void testIncreaseCollectionShouldReturnTwo() throws DataNotFoundException {
         CollectionId collection = new CollectionId();
         collection.setIdName("case");
@@ -48,5 +64,23 @@ class CollectionIdServiceTest {
         assertEquals(2, actual);
 
         verify(collectionIdRepository, times(1)).save(collection);
+    }
+
+    @Test
+    void testIncreaseCollectionIdThrowseError() {
+        CollectionId collection = new CollectionId();
+        collection.setIdName("case");
+
+        when(collectionIdRepository.findById("case")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(DataNotFoundException.class,
+                () -> collectionIdService.increaseCollectionId("case", 1));
+
+        String expectedMessage = "Collection name not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+        verify(collectionIdRepository, never()).save(collection);
     }
 }
