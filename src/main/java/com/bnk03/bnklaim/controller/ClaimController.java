@@ -45,7 +45,7 @@ public class ClaimController {
         Integer caseId;
         try {
             caseId = collectionIdService.increaseCollectionId("case", 1);
-            customerCaseDetailService.savecustomerCaseDetail(customerCaseDetail, caseId);
+            customerCaseDetailService.saveCustomerCaseDetail(customerCaseDetail, caseId);
             thirdPartyDetailService.saveThirdPartyDetail(thirdPartyDetail, caseId);
             return new ResponseEntity<>(STATUSSTRING + HttpStatus.CREATED.value() + ",\"message\":\"Success\"}",
                     httpHeaders, HttpStatus.CREATED);

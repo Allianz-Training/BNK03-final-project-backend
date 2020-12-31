@@ -50,7 +50,7 @@ public class AccountController {
                 } else {
                     return new ResponseEntity<>(
                             STATUSSTRING + HttpStatus.UNAUTHORIZED.value()
-                                    + ",\"message\":\"Username or password Not match\"}",
+                                    + ",\"message\":\"Email or password Not match\"}",
                             httpHeaders, HttpStatus.UNAUTHORIZED);
                 }
             } else {
@@ -91,7 +91,6 @@ public class AccountController {
     @PutMapping("/register/otp")
     public ResponseEntity<String> otp(@RequestBody Accounts accountInput) {
         Accounts account = accountService.getAccountFromDatabase(accountInput.getInsuranceAccountNumber());
-        System.out.println(account);
         if (accountService.isInOtpRequestedTime(account)) {
             if (accountService.isOtpValid(account, accountInput.getOneTimePassword())) {
                 accountService.setRegisterSuccess(account);

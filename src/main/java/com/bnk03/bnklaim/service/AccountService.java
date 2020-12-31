@@ -1,9 +1,9 @@
 package com.bnk03.bnklaim.service;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.Map.Entry;
+// import java.lang.reflect.InvocationTargetException;
+// import java.lang.reflect.Method;
+// import java.util.Map;
+// import java.util.Map.Entry;
 
 import com.bnk03.bnklaim.entity.Accounts;
 import com.bnk03.bnklaim.repositories.AccountsRepository;
@@ -17,7 +17,7 @@ public class AccountService {
     @Autowired
     private AccountsRepository accountsRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-    private static final long OTP_LIMIT_TIME = 5 * 60 * 1000;
+    private static final long OTP_LIMIT_TIME = (long) 5 * 60 * 1000;
 
     public AccountService() {
         // constructor
@@ -39,8 +39,7 @@ public class AccountService {
         try {
             return account.getFirstName().equals(dbAccount.getFirstName())
                     && account.getLastName().equals(dbAccount.getLastName())
-                    && account.getEmail().equals(dbAccount.getEmail())
-                    && account.getInsuranceAccountNumber().equals(dbAccount.getInsuranceAccountNumber());
+                    && account.getEmail().equals(dbAccount.getEmail());
         } catch (Exception e) {
             return false;
         }
@@ -55,15 +54,15 @@ public class AccountService {
         return dbAccount.isEnabled();
     }
 
-    public void update(Accounts account, Map<String, String> updateSet) throws IllegalAccessException,
-            NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
-        for (Entry<String, String> entry : updateSet.entrySet()) {
-            Method method = account.getClass().getDeclaredMethod(entry.getKey());
-            method.invoke(account, entry.getValue());
-        }
-
-        System.out.println(account);
-    }
+    // public void update(Accounts account, Map<String, String> updateSet) throws
+    // IllegalAccessException,
+    // NoSuchMethodException, SecurityException, IllegalArgumentException,
+    // InvocationTargetException {
+    // for (Entry<String, String> entry : updateSet.entrySet()) {
+    // Method method = account.getClass().getDeclaredMethod(entry.getKey());
+    // method.invoke(account, entry.getValue());
+    // }
+    // }
 
     public Accounts getAccountFromDatabase(String insuranceAccountNumber) {
         return accountsRepository.findByInsuranceAccountNumber(insuranceAccountNumber);

@@ -11,7 +11,7 @@ public class CustomerCaseDetailService {
     @Autowired
     private CustomerCaseDetailRepository customerCaseDetailRepository;
 
-    public void savecustomerCaseDetail(CustomerCaseDetail customerCaseDetail, Integer caseId) {
+    public void saveCustomerCaseDetail(CustomerCaseDetail customerCaseDetail, Integer caseId) {
         customerCaseDetail.setCaseId(caseId.toString());
         customerCaseDetailRepository.save(customerCaseDetail);
     }

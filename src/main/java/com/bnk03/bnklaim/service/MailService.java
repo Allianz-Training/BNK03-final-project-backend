@@ -53,8 +53,6 @@ public class MailService {
                 + "<p><b>" + otp + "</b></p>" + "<br>" + "<p>Note: this OTP is set to expire in 5 minutes.</p>";
 
         Message message = new MimeMessage(session);
-        System.out.println(senderEmail);
-        System.out.println(senderPassword);
         message.setFrom(new InternetAddress(senderEmail, false));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(accounts.getEmail()));
         message.setSubject(subject);
@@ -74,7 +72,6 @@ public class MailService {
 
         for (int i = 0; i < n; i++) {
             int index = random.nextInt(alphanumeric.length());
-            System.out.println(index);
             sb.append(alphanumeric.charAt(index));
         }
         return sb.toString();
