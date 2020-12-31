@@ -12,10 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -90,6 +92,7 @@ public class AccountController {
 
     @PutMapping("/register/otp")
     public ResponseEntity<String> otp(@RequestBody Accounts accountInput) {
+        System.out.println(accountInput);
         Accounts account = accountService.getAccountFromDatabase(accountInput.getInsuranceAccountNumber());
         System.out.println(account);
         if (accountService.isInOtpRequestedTime(account)) {
@@ -119,5 +122,14 @@ public class AccountController {
         accountService.disableAccount(account);
         return new ResponseEntity<>(STATUSSTRING + HttpStatus.OK.value() + ",\"message\":\"Success\"}", httpHeaders,
                 HttpStatus.OK);
+    }
+
+    @GetMapping("register/otp/disable")
+    public ResponseEntity<String> disableAccount(@RequestParam String insuranceAccountNumber) {
+        Accounts account = accountService.getAccountFromDatabase(insuranceAccountNumber);
+        accountService.clearOtpAndTemp(account);
+        accountService.disableAccount(account);
+        return new ResponseEntity<>(STATUSSTRING + HttpStatus.OK.value() + ",\"message\":\"Delete Success\"}",
+                httpHeaders, HttpStatus.OK);
     }
 }
