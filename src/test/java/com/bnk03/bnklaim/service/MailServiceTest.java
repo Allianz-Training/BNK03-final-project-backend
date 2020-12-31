@@ -1,13 +1,7 @@
 package com.bnk03.bnklaim.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.util.Properties;
-
-import javax.mail.MessagingException;
-import javax.mail.Session;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.bnk03.bnklaim.entity.Accounts;
 
@@ -25,18 +19,12 @@ class MailServiceTest {
     @InjectMocks
     MailService mailService;
 
-    // @Test
-    // void testSendMail() throws MessagingException {
-    // Properties props = new Properties();
-
-    // String otp = "OTP";
-    // mailService.sendMail(account, otp);
-
-    // verify(Session, times(1));
-    // }
-
     @Test
     void testGenerateOTP() {
-        assertEquals(true, true);
+        int n = 4;
+        String actual = mailService.generateOTP(n);
+
+        assertTrue(actual.matches("^[a-zA-Z0-9]*$"));
+        assertEquals(4, actual.length());
     }
 }
