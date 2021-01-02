@@ -10,6 +10,7 @@ public class CustomerCaseDetail {
     private String ownerImage1;
     private String ownerImage2;
     private String description;
+    private String insuranceAccountNumber;
 
     public String getCaseId() {
         return caseId;
@@ -41,6 +42,14 @@ public class CustomerCaseDetail {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getInsuranceAccountNumber() {
+        return insuranceAccountNumber;
+    }
+
+    public void setInsuranceAccountNumber(String insuranceAccountNumber) {
+        this.insuranceAccountNumber = insuranceAccountNumber;
     }
 
     @Override
