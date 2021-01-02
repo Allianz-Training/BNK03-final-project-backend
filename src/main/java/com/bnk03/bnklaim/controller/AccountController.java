@@ -45,8 +45,9 @@ public class AccountController {
             if (accountService.isEnabledAccount(dbAccount)) {
                 if (accountService.isMatch(account.getTemporaryPassword(), dbAccount.getPasswordHash())) {
                     return new ResponseEntity<>(
-                            STATUSSTRING + HttpStatus.OK.value() + ",\"message\":\"Login Success\"}", httpHeaders,
-                            HttpStatus.OK);
+                            STATUSSTRING + HttpStatus.OK.value() + ",\"message\":\"Login Success\",\"insuranceNumber\":"
+                                    + dbAccount.getInsuranceAccountNumber() + "}",
+                            httpHeaders, HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(
                             STATUSSTRING + HttpStatus.UNAUTHORIZED.value()
