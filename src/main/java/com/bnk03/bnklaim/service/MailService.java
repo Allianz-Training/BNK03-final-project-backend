@@ -67,7 +67,7 @@ public class MailService {
     }
 
     public String generateOTP(int n) {
-        String alphanumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        String alphanumeric = "abcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder sb = new StringBuilder(n);
 
         for (int i = 0; i < n; i++) {

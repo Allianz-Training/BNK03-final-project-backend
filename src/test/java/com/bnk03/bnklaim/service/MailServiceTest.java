@@ -24,7 +24,7 @@ class MailServiceTest {
         int n = 4;
         String actual = mailService.generateOTP(n);
 
-        assertTrue(actual.matches("^[a-zA-Z0-9]*$"));
+        assertTrue(actual.matches("^[a-z0-9]*$"));
         assertEquals(4, actual.length());
     }
 }
